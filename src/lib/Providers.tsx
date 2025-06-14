@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./theme";
 import type { ColumnType, DragState, Task } from "../types/task.types";
-import { storage } from "../utils/localstorage";
+import { storage } from "../utils/localStorage";
 
 interface AppContextType {
   // Theme

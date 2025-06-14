@@ -53,3 +53,30 @@ export const getInitialTasks = (): Task[] => [
     updatedAt: Date.now() - 21600000, // 6 hours ago
   },
 ];
+
+export const demoData = [
+  {
+    title: "To Do",
+    color: "#ef4444",
+    tasks: [
+      { title: "Design new landing page", meta: "Due in 3 days" },
+      { title: "Review user feedback", meta: "High priority" },
+    ],
+  },
+  {
+    title: "In Progress",
+    color: "#f59e0b",
+    tasks: [
+      { title: "Implement dark mode", meta: "Sarah Johnson" },
+      { title: "Fix mobile responsive issues", meta: "2 hours logged" },
+    ],
+  },
+  {
+    title: "Done",
+    color: "#10b981",
+    tasks: [
+      { title: "Setup project repository", meta: "Completed yesterday" },
+      { title: "Create wireframes", meta: "Approved by team" },
+    ],
+  },
+];
