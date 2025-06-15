@@ -12,7 +12,7 @@ function App() {
         <GlobalStyles theme={darkTheme} />
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/kanban" element={<Kanban />} />
+          <Route path="/tasks" element={<Kanban />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AppProvider>
