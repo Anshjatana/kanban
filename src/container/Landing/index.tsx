@@ -12,7 +12,7 @@ const Landing = () => {
   const { user, setUser } = useAppContext();
 
   const handleGetStarted = () => {
-    window.location.href = "/kanban";
+    window.location.href = "/tasks";
   };
 
   // Handler to update user name

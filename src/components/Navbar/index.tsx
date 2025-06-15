@@ -49,7 +49,7 @@ const Navbar = () => {
 
   return (
     <Header>
-      <Logo>Kanban Space</Logo>
+      <Logo onClick={() => (window.location.href = "/")}>Kanban Space</Logo>
       <ThemeToggle onClick={toggleTheme}>
         {theme == "dark" ? <Sun size={20} /> : <Moon size={20} />}
       </ThemeToggle>
