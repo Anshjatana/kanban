@@ -4,6 +4,7 @@ import Column from "../Column";
 import TaskModal from "../TaskModal";
 import type { ColumnType, TaskType } from "../../../types/task.types";
 import { useAppContext } from "../../../context/AppContext";
+import { presetTaskData } from "../../../constants";
 
 const BoardContainer = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const BoardContainer = styled.div`
   min-height: 70vh;
   align-items: flex-start;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
@@ -23,6 +24,7 @@ const BoardContainer = styled.div`
 
 const BoardHeader = styled.div`
   text-align: center;
+  margin: 0 1rem;
   margin-bottom: 2rem;
 `;
 
@@ -46,109 +48,16 @@ const BoardSubtitle = styled.em`
 `;
 
 const KanbanBoard: React.FC = () => {
-  const [columns, setColumns] = useState<ColumnType[]>([
-    {
-      id: "todo",
-      title: "To Do",
-      status: "todo",
-      color: "#ef4444",
-      tasks: [
-        {
-          id: "knbn-1",
-          title: "Review project requirements",
-          description:
-            "Go through the project specification document and identify key deliverables",
-          status: "todo",
-          priority: "high",
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        },
-        {
-          id: "knbn-2",
-          title: "Set up development environment",
-          description:
-            "Install necessary tools and configure the development workspace",
-          status: "todo",
-          priority: "medium",
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        },
-        {
-          id: "knbn-3",
-          title: "Create wireframes",
-          description:
-            "Design basic wireframes for the main user interface components",
-          status: "todo",
-          priority: "low",
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        },
-      ],
-    },
-    {
-      id: "in-progress",
-      title: "In Progress",
-      status: "in-progress",
-      color: "#f59e0b",
-      tasks: [
-        {
-          id: "knbn-4",
-          title: "Implement authentication",
-          description:
-            "Build user login and registration functionality with JWT tokens",
-          status: "in-progress",
-          priority: "low",
-          createdAt: Date.now() - 86400000, // 1 day ago
-          updatedAt: Date.now(),
-        },
-        {
-          id: "knbn-5",
-          title: "Design database schema",
-          description:
-            "Create tables and relationships for user data and application content",
-          status: "in-progress",
-          priority: "medium",
-          createdAt: Date.now() - 172800000, // 2 days ago
-          updatedAt: Date.now(),
-        },
-      ],
-    },
-    {
-      id: "done",
-      title: "Done",
-      status: "done",
-      color: "#10b981",
-      tasks: [
-        {
-          id: "knbn-6",
-          title: "Initialize project repository",
-          description:
-            "Set up Git repository with initial project structure and README",
-          status: "done",
-          priority: "high",
-          createdAt: Date.now() - 259200000, // 3 days ago
-          updatedAt: Date.now() - 172800000, // 2 days ago
-        },
-        {
-          id: "knbn-7",
-          title: "Research technology stack",
-          description:
-            "Evaluate and select appropriate frameworks and libraries for the project",
-          status: "done",
-          priority: "medium",
-          createdAt: Date.now() - 345600000, // 4 days ago
-          updatedAt: Date.now() - 259200000, // 3 days ago
-        },
-      ],
-    },
-  ]);
-
+  const [columns, setColumns] = useState<ColumnType[]>(presetTaskData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskType | null>(null);
   const [draggedTask, setDraggedTask] = useState<TaskType | null>(null);
+  const [targetColumnStatus, setTargetColumnStatus] = useState<
+    "todo" | "in-progress" | "done" | null
+  >(null);
   const { user } = useAppContext();
 
-  // Load tasks from localStorage on mount
+  // Loading tasks from localStorage on mount
   useEffect(() => {
     const savedTasks = localStorage.getItem("kanban-tasks");
     if (savedTasks) {
@@ -169,15 +78,8 @@ const KanbanBoard: React.FC = () => {
   }, [columns]);
 
   const handleCreateTask = (columnStatus: "todo" | "in-progress" | "done") => {
-    setEditingTask({
-      id: "",
-      title: "",
-      description: "",
-      status: columnStatus,
-      priority: "low",
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    });
+    setEditingTask(null);
+    setTargetColumnStatus(columnStatus);
     setIsModalOpen(true);
   };
 
@@ -213,13 +115,13 @@ const KanbanBoard: React.FC = () => {
         }))
       );
     } else {
-      // Create new task - get total count from current columns state
       const allCurrentTasks = columns.flatMap((column) => column.tasks);
       const totalTasks = allCurrentTasks.length;
 
       const newTask: TaskType = {
         id: `knbn-${totalTasks + 1}`,
         ...taskData,
+        status: targetColumnStatus || taskData.status, // Use targetColumnStatus
         createdAt: now,
         updatedAt: now,
       };
@@ -238,6 +140,7 @@ const KanbanBoard: React.FC = () => {
 
     setIsModalOpen(false);
     setEditingTask(null);
+    setTargetColumnStatus(null);
   };
 
   const handleDeleteTask = (taskId: string) => {
@@ -265,23 +168,22 @@ const KanbanBoard: React.FC = () => {
 
     if (!draggedTask) return;
 
-    // If dropping in the same column, don't do anything
     if (draggedTask.status === targetStatus) {
       setDraggedTask(null);
       return;
     }
 
-    // Update task status and move between columns
+    // Updating task status and move between columns
     setColumns((prevColumns) =>
       prevColumns.map((column) => {
         if (column.status === draggedTask.status) {
-          // Remove from source column
+          // Removing from source column
           return {
             ...column,
             tasks: column.tasks.filter((task) => task.id !== draggedTask.id),
           };
         } else if (column.status === targetStatus) {
-          // Add to target column and sort by priority
+          // Adding to target column and sort by priority
           const updatedTasks = [
             ...column.tasks,
             {
@@ -334,9 +236,11 @@ const KanbanBoard: React.FC = () => {
         onClose={() => {
           setIsModalOpen(false);
           setEditingTask(null);
+          setTargetColumnStatus(null);
         }}
         onSave={handleSaveTask}
         task={editingTask}
+        targetColumnStatus={targetColumnStatus || "todo"}
       />
     </>
   );

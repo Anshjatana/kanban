@@ -1,3 +1,5 @@
+import type { ColumnType, TaskType } from "./task.types";
+
 export interface Task {
   title: string;
   meta: string;
@@ -43,4 +45,13 @@ export interface ModalProps {
   children: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+}
+export interface ColumnProps {
+  column: ColumnType;
+  onCreateTask: () => void;
+  onEditTask: (task: TaskType) => void;
+  onDeleteTask: (taskId: string) => void;
+  onDragStart: (task: TaskType) => void;
+  onDragOver: (e: React.DragEvent) => void;
+  onDrop: (e: React.DragEvent) => void;
 }

@@ -45,3 +45,18 @@ export interface AppContextType {
   endDrag: () => void;
   dragOver: (column: ColumnType | null) => void;
 }
+
+export interface TaskModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (task: Omit<TaskType, "id" | "createdAt" | "updatedAt">) => void;
+  task?: TaskType | null;
+  targetColumnStatus?: "todo" | "in-progress" | "done";
+}
+
+export interface TaskProps {
+  task: TaskType;
+  onEdit: (task: TaskType) => void;
+  onDelete: (taskId: string) => void;
+  onDragStart: (task: TaskType) => void;
+}

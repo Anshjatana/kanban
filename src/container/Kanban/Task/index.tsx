@@ -5,7 +5,7 @@ import {
   AlertCircle,
   SquareArrowOutUpRight,
 } from "lucide-react";
-import type { TaskType } from "../../../types/task.types";
+import type { TaskProps } from "../../../types/task.types";
 import {
   ActionButton,
   HeaderWrapper,
@@ -18,13 +18,6 @@ import {
   TaskMeta,
   TaskTitle,
 } from "./styles";
-
-interface TaskProps {
-  task: TaskType;
-  onEdit: (task: TaskType) => void;
-  onDelete: (taskId: string) => void;
-  onDragStart: (task: TaskType) => void;
-}
 
 const Task: React.FC<TaskProps> = ({ task, onEdit, onDelete, onDragStart }) => {
   const [isDragging, setIsDragging] = React.useState(false);
@@ -48,7 +41,7 @@ const Task: React.FC<TaskProps> = ({ task, onEdit, onDelete, onDragStart }) => {
       <HeaderWrapper>
         <TaskContent>
           <TaskDescription style={{ marginBottom: "8px" }}>
-            {task.id}
+            {task.id.toLocaleUpperCase()}
           </TaskDescription>
           <TaskTitle>{task.title}</TaskTitle>
           {task.description && (

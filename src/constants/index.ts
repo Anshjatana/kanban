@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-import type { TaskType } from "../types/task.types";
+import type { ColumnType, TaskType } from "../types/task.types";
 import type { ModalSize } from "../types";
 
 export const COLUMNS = {
@@ -122,3 +122,100 @@ export const getSizeStyles = (size: ModalSize) => {
 
   return sizes[size];
 };
+
+export const presetTaskData: ColumnType[] = [
+  {
+    id: "todo",
+    title: "To Do",
+    status: "todo",
+    color: "#ef4444",
+    tasks: [
+      {
+        id: "knbn-1",
+        title: "Review project requirements",
+        description:
+          "Go through the project specification document and identify key deliverables",
+        status: "todo",
+        priority: "high",
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      },
+      {
+        id: "knbn-2",
+        title: "Set up development environment",
+        description:
+          "Install necessary tools and configure the development workspace",
+        status: "todo",
+        priority: "medium",
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      },
+      {
+        id: "knbn-3",
+        title: "Create wireframes",
+        description:
+          "Design basic wireframes for the main user interface components",
+        status: "todo",
+        priority: "low",
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      },
+    ],
+  },
+  {
+    id: "in-progress",
+    title: "In Progress",
+    status: "in-progress",
+    color: "#f59e0b",
+    tasks: [
+      {
+        id: "knbn-4",
+        title: "Implement authentication",
+        description:
+          "Build user login and registration functionality with JWT tokens",
+        status: "in-progress",
+        priority: "low",
+        createdAt: Date.now() - 86400000, // 1 day ago
+        updatedAt: Date.now(),
+      },
+      {
+        id: "knbn-5",
+        title: "Design database schema",
+        description:
+          "Create tables and relationships for user data and application content",
+        status: "in-progress",
+        priority: "medium",
+        createdAt: Date.now() - 172800000, // 2 days ago
+        updatedAt: Date.now(),
+      },
+    ],
+  },
+  {
+    id: "done",
+    title: "Done",
+    status: "done",
+    color: "#10b981",
+    tasks: [
+      {
+        id: "knbn-6",
+        title: "Initialize project repository",
+        description:
+          "Set up Git repository with initial project structure and README",
+        status: "done",
+        priority: "high",
+        createdAt: Date.now() - 259200000, // 3 days ago
+        updatedAt: Date.now() - 172800000, // 2 days ago
+      },
+      {
+        id: "knbn-7",
+        title: "Research technology stack",
+        description:
+          "Evaluate and select appropriate frameworks and libraries for the project",
+        status: "done",
+        priority: "medium",
+        createdAt: Date.now() - 345600000, // 4 days ago
+        updatedAt: Date.now() - 259200000, // 3 days ago
+      },
+    ],
+  },
+];

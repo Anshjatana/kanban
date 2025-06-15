@@ -122,7 +122,7 @@ export const TextArea = styled.textarea`
 export const Select = styled.select`
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid ${(props) => props.theme.colors.surface.primary};
+  border: 1px solid ${(props) => props.theme.colors.surface.border};
   border-radius: 6px;
   background: ${(props) => props.theme.colors.bg.secondary};
   color: ${(props) => props.theme.colors.text.primary};
