@@ -1,7 +1,7 @@
 import React from "react";
 import { Plus } from "lucide-react";
-import type { ColumnType, TaskType } from "../../../types/task.types";
 import Task from "../Task";
+import type { ColumnProps } from "../../../types";
 import {
   AddTaskButton,
   ColumnContainer,
@@ -13,16 +13,6 @@ import {
   TaskCount,
   TasksList,
 } from "./Styles";
-
-interface ColumnProps {
-  column: ColumnType;
-  onCreateTask: () => void;
-  onEditTask: (task: TaskType) => void;
-  onDeleteTask: (taskId: string) => void;
-  onDragStart: (task: TaskType) => void;
-  onDragOver: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-}
 
 const Column: React.FC<ColumnProps> = ({
   column,

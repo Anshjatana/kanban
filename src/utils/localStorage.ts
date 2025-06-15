@@ -1,6 +1,4 @@
 import { getFirstName } from "./index";
-import { getInitialTasks } from "../constants";
-import type { TaskType } from "../types/task.types";
 
 const KEYS = {
   USER: "kanban-user",
@@ -43,48 +41,6 @@ export const storage = {
       }
     } catch (error) {
       console.warn("Failed to set user in localStorage:", error);
-    }
-  },
-
-  getTasks: (): TaskType[] => {
-    try {
-      const tasksStr = localStorage.getItem(KEYS.TASKS);
-      if (!tasksStr) {
-        const initialTasks = getInitialTasks();
-        storage.setTasks(initialTasks);
-        return initialTasks;
-      }
-
-      const tasks = JSON.parse(tasksStr);
-      if (Array.isArray(tasks)) {
-        return tasks.filter(
-          (task) =>
-            task &&
-            typeof task.id === "string" &&
-            typeof task.title === "string" &&
-            typeof task.description === "string" &&
-            ["todo", "in-progress", "done"].includes(task.column) &&
-            typeof task.createdAt === "number" &&
-            typeof task.updatedAt === "number"
-        );
-      }
-
-      const initialTasks = getInitialTasks();
-      storage.setTasks(initialTasks);
-      return initialTasks;
-    } catch (error) {
-      console.warn("Failed to get tasks from localStorage:", error);
-      const initialTasks = getInitialTasks();
-      storage.setTasks(initialTasks);
-      return initialTasks;
-    }
-  },
-
-  setTasks: (tasks: TaskType[]): void => {
-    try {
-      localStorage.setItem(KEYS.TASKS, JSON.stringify(tasks));
-    } catch (error) {
-      console.warn("Failed to set tasks in localStorage:", error);
     }
   },
 

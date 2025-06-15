@@ -1,40 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { AlertCircle, X } from "lucide-react";
-import Button from "../../../components/Button";
-import type { TaskType } from "../../../types/task.types";
-import {
-  CloseButton,
-  FormGroup,
-  Label,
-  ModalBody,
-  ModalContainer,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  ModalTitle,
-  Select,
-} from "./style";
-import Input from "../../../components/Input";
+import { AlertCircle } from "lucide-react";
+import type { TaskModalProps, TaskType } from "../../../types/task.types";
 import { PriorityBadge } from "../Task/styles";
-
-interface TaskModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (task: Omit<TaskType, "id" | "createdAt" | "updatedAt">) => void;
-  task?: TaskType | null;
-}
+import { FormGroup, Label, Select } from "./style";
+import Button from "../../../components/Button";
+import Input from "../../../components/Input";
+import Modal from "../../../components/Modal";
 
 const TaskModal: React.FC<TaskModalProps> = ({
   isOpen,
   onClose,
   onSave,
   task,
+  targetColumnStatus,
 }) => {
   const [formData, setFormData] = useState<TaskType>({
     id: task?.id || "",
     title: "",
     description: "",
-    status: "todo",
+    status: targetColumnStatus || "todo",
     priority: "low" as "low" | "medium" | "high",
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -47,7 +31,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
         title: task.title,
         description: task.description || "",
         status: task.status,
-        priority: task.priority || "",
+        priority: task.priority || "low",
         createdAt: task.createdAt,
         updatedAt: task.updatedAt,
       });
@@ -56,13 +40,13 @@ const TaskModal: React.FC<TaskModalProps> = ({
         id: "",
         title: "",
         description: "",
-        status: "todo",
+        status: targetColumnStatus || "todo",
         priority: "low",
         createdAt: 0,
         updatedAt: 0,
       });
     }
-  }, [task, isOpen]);
+  }, [task, isOpen, targetColumnStatus]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,120 +69,110 @@ const TaskModal: React.FC<TaskModalProps> = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  if (!isOpen) return null;
+  const modalFooter = (
+    <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
+      <Button variant="danger" onClick={onClose}>
+        Cancel
+      </Button>
+      <Button
+        isFullWidth
+        type="submit"
+        form="task-form"
+        variant="primary"
+        disabled={!formData.title.trim()}
+      >
+        {task ? "Update Task" : "Create Task"}
+      </Button>
+    </div>
+  );
 
   return (
-    <ModalOverlay onClick={handleOverlayClick}>
-      <ModalContainer>
-        <ModalHeader>
-          <ModalTitle>{task ? "Edit Task" : "Create New Task"}</ModalTitle>
-          <CloseButton onClick={onClose}>
-            <X size={20} />
-          </CloseButton>
-        </ModalHeader>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={task ? "Edit Task" : "Create New Task"}
+      size="md"
+      footer={modalFooter}
+    >
+      <form id="task-form" onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label htmlFor="title">Task Title</Label>
+          <Input
+            id="title"
+            name="title"
+            type="text"
+            value={formData.title}
+            onChange={handleChange}
+            placeholder="Enter task title..."
+            required
+          />
+        </FormGroup>
 
-        <form onSubmit={handleSubmit}>
-          <ModalBody>
-            <FormGroup>
-              <Label htmlFor="title">Task Title</Label>
-              <Input
-                id="title"
-                name="title"
-                type="text"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="Enter task title..."
-                required
-              />
-            </FormGroup>
+        <FormGroup>
+          <Label htmlFor="description">Description</Label>
+          <Input
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Enter task description..."
+          />
+        </FormGroup>
 
-            <FormGroup>
-              <Label htmlFor="description">Description</Label>
-              <Input
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                placeholder="Enter task description..."
-              />
-            </FormGroup>
+        <FormGroup>
+          <Label htmlFor="status">Status</Label>
+          <Select
+            id="status"
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+          >
+            <option value="todo">To Do</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+          </Select>
+        </FormGroup>
 
-            <FormGroup>
-              <Label htmlFor="status">Status</Label>
-              <Select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
-                <option value="todo">To Do</option>
-                <option value="in-progress">In Progress</option>
-                <option value="done">Done</option>
-              </Select>
-            </FormGroup>
-
-            <FormGroup>
-              <Label>Priority</Label>
-              <div
+        <FormGroup>
+          <Label>Priority</Label>
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              flexWrap: "wrap",
+              alignItems: "center",
+              marginTop: "16px",
+            }}
+          >
+            {["low", "medium", "high"].map((priority) => (
+              <PriorityBadge
+                key={priority}
+                $priority={priority as "low" | "medium" | "high"}
+                onClick={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    priority: priority as "low" | "medium" | "high",
+                  }))
+                }
                 style={{
-                  display: "flex",
-                  gap: "12px",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  marginTop: "16px",
+                  cursor: "pointer",
+                  fontSize: "0.8rem",
+                  opacity: formData.priority === priority ? 1 : 0.6,
+                  border:
+                    formData.priority === priority
+                      ? "1px solid"
+                      : "1px solid transparent",
+                  transition: "all 0.2s ease",
                 }}
               >
-                {["low", "medium", "high"].map((priority) => (
-                  <PriorityBadge
-                    key={priority}
-                    $priority={priority as "low" | "medium" | "high"}
-                    onClick={() =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        priority: priority as "low" | "medium" | "high",
-                      }))
-                    }
-                    style={{
-                      cursor: "pointer",
-                      fontSize: "0.8rem",
-                      opacity: formData.priority === priority ? 1 : 0.6,
-                      border:
-                        formData.priority === priority
-                          ? "1px solid"
-                          : "1px solid transparent",
-                      transition: "all 0.2s ease",
-                    }}
-                  >
-                    <AlertCircle size={10} style={{ marginRight: "2px" }} />
-                    {priority}
-                  </PriorityBadge>
-                ))}
-              </div>
-            </FormGroup>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button variant="danger" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              isFullWidth
-              variant="primary"
-              disabled={!formData.title.trim()}
-            >
-              {task ? "Update Task" : "Create Task"}
-            </Button>
-          </ModalFooter>
-        </form>
-      </ModalContainer>
-    </ModalOverlay>
+                <AlertCircle size={10} style={{ marginRight: "2px" }} />
+                {priority}
+              </PriorityBadge>
+            ))}
+          </div>
+        </FormGroup>
+      </form>
+    </Modal>
   );
 };
 

@@ -21,28 +21,6 @@ const fadeOut = keyframes`
   }
 `;
 
-const slideIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-`;
-
-const slideOut = keyframes`
-  from {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
-  }
-`;
-
 export const Backdrop = styled.div<{ $isClosing: boolean }>`
   position: fixed;
   top: 0;
@@ -60,7 +38,7 @@ export const Backdrop = styled.div<{ $isClosing: boolean }>`
   animation: ${({ $isClosing }) => ($isClosing ? fadeOut : fadeIn)} 0.2s
     ease-out;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     padding: ${({ theme }) => theme.spacing.md};
     align-items: flex-end;
   }
@@ -81,10 +59,7 @@ export const ModalContainer = styled.div<{
 
   ${({ $size }) => getSizeStyles($size)}
 
-  animation: ${({ $isClosing }) =>
-    $isClosing ? slideOut : slideIn} 0.2s ease-out;
-
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     width: 100%;
     max-height: 85vh;
     margin-bottom: 0;
@@ -97,9 +72,10 @@ export const ModalHeader = styled.div<{ $hasTitle: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: ${({ theme }) => theme.colors.bg.primary};
   padding: ${({ theme }) =>
     `${theme.spacing.lg} ${theme.spacing.lg} ${theme.spacing.md}`};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.surface.border};
+  // border-bottom: 1px solid ${({ theme }) => theme.colors.surface.border};
   flex-shrink: 0;
 
   ${({ $hasTitle }) =>
@@ -153,30 +129,13 @@ export const ModalBody = styled.div`
   flex: 1;
   overflow-y: auto;
   padding: ${({ theme }) => theme.spacing.lg};
-
-  /* Custom scrollbar for better UX */
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme.colors.surface.secondary};
-    border-radius: 3px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.surface.border};
-    border-radius: 3px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: ${({ theme }) => theme.colors.text.tertiary};
-  }
+  background-color: ${({ theme }) => theme.colors.bg.primary};
 `;
 
 export const ModalFooter = styled.div`
   padding: ${({ theme }) =>
     `${theme.spacing.md} ${theme.spacing.lg} ${theme.spacing.lg}`};
   border-top: 1px solid ${({ theme }) => theme.colors.surface.border};
+  background-color: ${({ theme }) => theme.colors.bg.primary};
   flex-shrink: 0;
 `;

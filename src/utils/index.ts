@@ -3,7 +3,7 @@ export const formatUsername = (username: string): string => {
 
   return username
     .trim()
-    .replace(/\s+/g, " ") // Replace multiple spaces with single space
+    .replace(/\s+/g, " ")
     .toLowerCase()
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))

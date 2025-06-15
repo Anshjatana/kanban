@@ -1,9 +1,7 @@
-// src/components/Button/Button.tsx
 import React from "react";
 import styled, { css } from "styled-components";
 
-// Button variant types
-export type ButtonVariant = "primary" | "secondary" | "danger" | "outline";
+export type ButtonVariant = "primary" | "secondary" | "danger";
 export type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps
@@ -71,22 +69,6 @@ const getVariantStyles = (variant: ButtonVariant) => {
       &:active:not(:disabled) {
         transform: translateY(0);
         box-shadow: ${({ theme }) => theme.shadows.sm};
-      }
-    `,
-    outline: css`
-      background-color: transparent;
-      color: ${({ theme }) => theme.colors.interactive.primary};
-      border: 1px solid ${({ theme }) => theme.colors.interactive.primary};
-
-      &:hover:not(:disabled) {
-        background-color: ${({ theme }) => theme.colors.interactive.primary};
-        color: ${({ theme }) => theme.colors.text.inverse};
-        transform: translateY(-1px);
-        box-shadow: ${({ theme }) => theme.shadows.sm};
-      }
-
-      &:active:not(:disabled) {
-        transform: translateY(0);
       }
     `,
   };

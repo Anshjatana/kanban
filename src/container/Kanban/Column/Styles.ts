@@ -16,7 +16,7 @@ export const ColumnContainer = styled.div`
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     min-width: 100%;
   }
 `;
@@ -84,7 +84,7 @@ export const TasksList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-height: 200px;
+  min-height: 50px;
 `;
 
 export const DropZone = styled.div`

@@ -2,7 +2,7 @@ export const lightTheme = {
   colors: {
     bg: {
       primary: "#ffffff",
-      secondary: "#fafafa",
+      secondary: "rgb(234 234 234)",
       tertiary: "#f5f5f5",
       elevated: "#ffffff",
     },

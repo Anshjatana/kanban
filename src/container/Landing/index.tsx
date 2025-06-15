@@ -15,7 +15,6 @@ const Landing = () => {
     window.location.href = "/tasks";
   };
 
-  // Handler to update user name
   const handleSetUserName = (name: string) => {
     setUser({ name: name });
   };
