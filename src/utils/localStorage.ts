@@ -1,3 +1,4 @@
+import { getFirstName } from "./index";
 import { getInitialTasks } from "../constants";
 import type { Task } from "../types/task.types";
 
@@ -15,7 +16,9 @@ export const storage = {
 
       const user = JSON.parse(userStr);
       if (user && typeof user.name === "string" && user.name.trim()) {
-        return { name: user.name };
+        // Get first name only when retrieving from storage
+        const firstName = getFirstName(user.name);
+        return firstName ? { name: firstName } : null;
       }
       return null;
     } catch (error) {
@@ -26,10 +29,17 @@ export const storage = {
 
   setUser: (user: { name: string } | null): void => {
     try {
-      if (user === null) {
+      if (!user) {
         localStorage.removeItem(KEYS.USER);
+        return;
+      }
+
+      // Store only the first name in title case
+      const firstName = getFirstName(user.name);
+      if (firstName) {
+        localStorage.setItem(KEYS.USER, JSON.stringify({ name: firstName }));
       } else {
-        localStorage.setItem(KEYS.USER, JSON.stringify(user));
+        localStorage.removeItem(KEYS.USER);
       }
     } catch (error) {
       console.warn("Failed to set user in localStorage:", error);

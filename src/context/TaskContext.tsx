@@ -1,7 +1,7 @@
 // context/TaskContext.tsx
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 import type { Task, ColumnType, DragState } from "../types/task.types";
-import { storage } from "../utils/localstorage";
+import { storage } from "../utils/localStorage";
 
 // Action types
 type TaskAction =
