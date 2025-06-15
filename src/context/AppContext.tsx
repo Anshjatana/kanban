@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
-import type { ColumnType, DragState, Task } from "../types/task.types";
+import type { ColumnType, DragState, TaskType } from "../types/task.types";
 import { storage } from "../utils/localStorage";
 import { darkTheme, lightTheme } from "../lib/theme";
 
@@ -14,19 +14,19 @@ interface AppContextType {
   setUser: (user: { name: string } | null) => void;
 
   // Tasks
-  tasks: Task[];
-  selectedTask: Task | null;
+  tasks: TaskType[];
+  selectedTask: TaskType | null;
   dragState: DragState;
 
   // Task actions
-  addTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => void;
-  updateTask: (id: string, updates: Partial<Task>) => void;
+  addTask: (task: Omit<TaskType, "id" | "createdAt" | "updatedAt">) => void;
+  updateTask: (id: string, updates: Partial<TaskType>) => void;
   deleteTask: (id: string) => void;
   moveTask: (taskId: string, targetColumn: ColumnType) => void;
-  selectTask: (task: Task | null) => void;
+  selectTask: (task: TaskType | null) => void;
 
   // Drag actions
-  startDrag: (task: Task) => void;
+  startDrag: (task: TaskType) => void;
   endDrag: () => void;
   dragOver: (column: ColumnType | null) => void;
 }

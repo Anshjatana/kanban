@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-import type { Task } from "../types/task.types";
+import type { TaskType } from "../types/task.types";
 import type { ModalSize } from "../types";
 
 export const COLUMNS = {
@@ -26,12 +26,12 @@ export const COLUMN_CONFIG = [
   },
 ] as const;
 
-export const getInitialTasks = (): Task[] => [
+export const getInitialTasks = (): TaskType[] => [
   {
     id: "task-1",
     title: "Set up project structure",
     description: "Create the basic folder structure and install dependencies",
-    column: "todo",
+    status: "todo",
     priority: "medium",
     createdAt: Date.now() - 86400000, // 1 day ago
     updatedAt: Date.now() - 86400000,
@@ -40,7 +40,7 @@ export const getInitialTasks = (): Task[] => [
     id: "task-2",
     title: "Implement drag and drop",
     description: "Add HTML5 drag and drop functionality with smooth animations",
-    column: "in-progress",
+    status: "in-progress",
     priority: "high",
     createdAt: Date.now() - 43200000, // 12 hours ago
     updatedAt: Date.now() - 43200000,
@@ -49,7 +49,7 @@ export const getInitialTasks = (): Task[] => [
     id: "task-3",
     title: "Design system setup",
     description: "Create theme provider and design tokens",
-    column: "done",
+    status: "done",
     priority: "low",
     createdAt: Date.now() - 172800000, // 2 days ago
     updatedAt: Date.now() - 21600000, // 6 hours ago
