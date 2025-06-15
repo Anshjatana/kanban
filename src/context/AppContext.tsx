@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "./theme";
 import type { ColumnType, DragState, Task } from "../types/task.types";
 import { storage } from "../utils/localStorage";
+import { darkTheme, lightTheme } from "../lib/theme";
 
 interface AppContextType {
   // Theme

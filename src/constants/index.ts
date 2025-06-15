@@ -1,4 +1,6 @@
+import { css } from "styled-components";
 import type { Task } from "../types/task.types";
+import type { ModalSize } from "../types";
 
 export const COLUMNS = {
   TODO: "todo" as const,
@@ -61,6 +63,8 @@ export const demoData = [
     tasks: [
       { title: "Design new landing page", meta: "Due in 3 days" },
       { title: "Review user feedback", meta: "High priority" },
+      { title: "Write unit tests", meta: "Due tomorrow" },
+      { title: "Plan sprint goals", meta: "Team meeting at 3 PM" },
     ],
   },
   {
@@ -69,6 +73,8 @@ export const demoData = [
     tasks: [
       { title: "Implement dark mode", meta: "Sarah Johnson" },
       { title: "Fix mobile responsive issues", meta: "2 hours logged" },
+      { title: "Refactor authentication logic", meta: "John Doe" },
+      { title: "Optimize database queries", meta: "Performance improvement" },
     ],
   },
   {
@@ -77,6 +83,42 @@ export const demoData = [
     tasks: [
       { title: "Setup project repository", meta: "Completed yesterday" },
       { title: "Create wireframes", meta: "Approved by team" },
+      { title: "Deploy staging environment", meta: "Completed 2 hours ago" },
+      { title: "Update documentation", meta: "Reviewed by tech lead" },
     ],
   },
 ];
+
+// Size configurations
+export const getSizeStyles = (size: ModalSize) => {
+  const sizes = {
+    sm: css`
+      width: 90vw;
+      max-width: 400px;
+      max-height: 90vh;
+    `,
+    md: css`
+      width: 90vw;
+      max-width: 500px;
+      max-height: 90vh;
+    `,
+    lg: css`
+      width: 90vw;
+      max-width: 700px;
+      max-height: 90vh;
+    `,
+    xl: css`
+      width: 90vw;
+      max-width: 900px;
+      max-height: 90vh;
+    `,
+    full: css`
+      width: 95vw;
+      height: 95vh;
+      max-width: none;
+      max-height: none;
+    `,
+  };
+
+  return sizes[size];
+};

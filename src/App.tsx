@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Landing from "./container/Landing";
 import Kanban from "./container/Kanban";
-import { AppProvider } from "./lib/Providers";
 import { GlobalStyles } from "./lib/globalStyles";
 import { darkTheme } from "./lib/theme";
+import { AppProvider } from "./context/AppContext";
 
 function App() {
   return (

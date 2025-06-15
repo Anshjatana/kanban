@@ -1,3 +1,4 @@
+import type { DemoProps } from "../../types";
 import {
   ColumnHeader,
   DemoSection,
@@ -9,21 +10,6 @@ import {
   TaskMeta,
   TaskTitle,
 } from "./styles";
-
-interface Task {
-  title: string;
-  meta: string;
-}
-
-interface Column {
-  color: string;
-  title: string;
-  tasks: Task[];
-}
-
-interface DemoProps {
-  demoData: Column[];
-}
 
 const Demo = ({ demoData }: DemoProps) => {
   return (

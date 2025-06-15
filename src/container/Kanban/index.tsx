@@ -1,7 +1,5 @@
-import React from "react";
-
 const Kanban = () => {
-  return <div></div>;
+  return <div>Hey</div>;
 };
 
 export default Kanban;

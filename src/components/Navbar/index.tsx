@@ -1,6 +1,6 @@
 import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useAppContext } from "../../context/AppContext";
 
 const Header = styled.header`
   position: fixed;
@@ -8,7 +8,7 @@ const Header = styled.header`
   left: 0;
   right: 0;
   padding: 1rem 2rem;
-  background: ${(props) => props.theme.colors.bg.elevated}95;
+  background: ${(props) => props.theme.colors.bg.primary}90;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid ${(props) => props.theme.colors.surface.border};
   z-index: 100;
@@ -45,26 +45,13 @@ const ThemeToggle = styled.button`
 `;
 
 const Navbar = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  const toggleTheme = () => {
-    const newTheme = !isDark;
-    setIsDark(newTheme);
-    localStorage?.setItem("theme", newTheme ? "dark" : "light");
-  };
-
-  useEffect(() => {
-    const savedTheme = localStorage?.getItem("theme");
-    if (savedTheme) {
-      setIsDark(savedTheme === "dark");
-    }
-  }, []);
+  const { toggleTheme, theme } = useAppContext();
 
   return (
     <Header>
       <Logo>Kanban Space</Logo>
       <ThemeToggle onClick={toggleTheme}>
-        {isDark ? <Sun size={20} /> : <Moon size={20} />}
+        {theme == "dark" ? <Sun size={20} /> : <Moon size={20} />}
       </ThemeToggle>
     </Header>
   );

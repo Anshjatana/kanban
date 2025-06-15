@@ -27,7 +27,7 @@ export const HeroSection = styled.section`
     bottom: 0;
     background: radial-gradient(
         circle at 30% 20%,
-        ${(props) => props.theme.colors.interactive.primary}20 0%,
+        ${(props) => props.theme.colors.interactive.primary}50 0%,
         transparent 50%
       ),
       radial-gradient(
@@ -71,7 +71,7 @@ export const HeroSubtitle = styled.p`
 `;
 
 export const WelcomeForm = styled.div`
-  background: ${(props) => props.theme.colors.surface.primary};
+  background: ${(props) => props.theme.colors.bg.primary};
   border: 1px solid ${(props) => props.theme.colors.surface.border};
   border-radius: ${(props) => props.theme.borderRadius.xl};
   padding: 2rem;
@@ -87,57 +87,9 @@ export const InputGroup = styled.div`
 
 export const Label = styled.label`
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   font-weight: 600;
   color: ${(props) => props.theme.colors.text.primary};
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid ${(props) => props.theme.colors.surface.border};
-  border-radius: ${(props) => props.theme.borderRadius.md};
-  background: ${(props) => props.theme.colors.bg.primary};
-  color: ${(props) => props.theme.colors.text.primary};
-  font-size: 1rem;
-  transition: all 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: ${(props) => props.theme.colors.interactive.primary};
-    box-shadow: 0 0 0 3px ${(props) => props.theme.colors.interactive.primary}20;
-  }
-`;
-
-export const CTAButton = styled.button`
-  background: linear-gradient(
-    135deg,
-    ${(props) => props.theme.colors.interactive.primary} 0%,
-    ${(props) => props.theme.colors.interactive.primaryHover} 100%
-  );
-  color: ${(props) => props.theme.colors.text.inverse};
-  border: none;
-  border-radius: ${(props) => props.theme.borderRadius.lg};
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  justify-content: center;
-  box-shadow: ${(props) => props.theme.shadows.md};
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${(props) => props.theme.shadows.xl};
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
 `;
 
 export const DemoSection = styled.section`

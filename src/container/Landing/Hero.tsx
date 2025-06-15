@@ -1,21 +1,16 @@
+import { ChevronRight } from "lucide-react";
+import type { HeroProps } from "../../types";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
 import {
-  CTAButton,
   HeroContent,
   HeroSection,
   HeroSubtitle,
   HeroTitle,
-  Input,
   InputGroup,
   Label,
   WelcomeForm,
 } from "./styles";
-import { ChevronRight } from "lucide-react";
-
-interface HeroProps {
-  userName: string;
-  setUserName: (name: string) => void;
-  handleGetStarted: () => void;
-}
 
 const Hero = ({ userName, setUserName, handleGetStarted }: HeroProps) => {
   return (
@@ -35,6 +30,7 @@ const Hero = ({ userName, setUserName, handleGetStarted }: HeroProps) => {
           <InputGroup>
             <Label htmlFor="name">What should we call you?</Label>
             <Input
+              isFullWidth
               id="name"
               type="text"
               placeholder="Enter your name"
@@ -42,10 +38,10 @@ const Hero = ({ userName, setUserName, handleGetStarted }: HeroProps) => {
               onChange={(e) => setUserName(e.target.value)}
             />
           </InputGroup>
-          <CTAButton onClick={handleGetStarted}>
+          <Button size="sm" isFullWidth onClick={handleGetStarted}>
             Get Started
             <ChevronRight size={20} />
-          </CTAButton>
+          </Button>
         </WelcomeForm>
       </HeroContent>
     </HeroSection>

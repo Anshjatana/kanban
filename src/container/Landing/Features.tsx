@@ -1,3 +1,4 @@
+import type { FeaturesProps } from "../../types";
 import {
   FeatureCard,
   FeatureDescription,
@@ -8,20 +9,10 @@ import {
   SectionTitle,
 } from "./styles";
 
-interface Feature {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
-interface FeaturesProps {
-  features: Feature[];
-}
-
 const Features = ({ features }: FeaturesProps) => {
   return (
     <FeatureSection>
-      <SectionTitle>Features</SectionTitle>
+      <SectionTitle>Why to use?</SectionTitle>
       <FeaturesGrid>
         {features.map((feature, index) => (
           <FeatureCard key={index}>

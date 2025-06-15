@@ -1,4 +1,3 @@
-// src/components/Input/Input.tsx
 import React, { forwardRef } from "react";
 import styled, { css } from "styled-components";
 
@@ -9,64 +8,58 @@ export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   label?: string;
   error?: string;
-  hint?: string;
   inputSize?: InputSize;
   variant?: InputVariant;
   isFullWidth?: boolean;
-  precedingIcon?: React.ReactNode;
-  followingIcon?: React.ReactNode;
-  isLoading?: boolean;
 }
 
 // Size styles
-const getSizeStyles = (size: InputSize) => {
-  const sizes = {
-    sm: css`
-      padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-      font-size: 0.875rem;
-      min-height: 32px;
-    `,
-    md: css`
-      padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing.md}`};
-      font-size: 0.9375rem;
-      min-height: 40px;
-    `,
-    lg: css`
-      padding: ${({ theme }) => `${theme.spacing.lg} ${theme.spacing.lg}`};
-      font-size: 1rem;
-      min-height: 48px;
-    `,
-  };
-
-  return sizes[size];
+const sizeStyles = {
+  sm: css`
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    min-height: 32px;
+  `,
+  md: css`
+    padding: 12px 12px;
+    font-size: 0.9375rem;
+    min-height: 40px;
+  `,
+  lg: css`
+    padding: 16px 16px;
+    font-size: 1rem;
+    min-height: 48px;
+  `,
 };
 
-// Variant styles
+// Base input styles
+const baseInputStyles = css`
+  font-family: inherit;
+  background-color: ${({ theme }) => theme.colors.surface.primary};
+  color: ${({ theme }) => theme.colors.text.primary};
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.text.tertiary};
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.interactive.primary}40;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: ${({ theme }) => theme.colors.surface.secondary};
+  }
+`;
+
+// Variant styles - using functions to properly access props
 const getVariantStyles = (variant: InputVariant, hasError: boolean) => {
-  const baseStyles = css`
-    background-color: ${({ theme }) => theme.colors.surface.primary};
-    color: ${({ theme }) => theme.colors.text.primary};
-    transition: all 0.2s ease;
-
-    &::placeholder {
-      color: ${({ theme }) => theme.colors.text.tertiary};
-    }
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.interactive.primary}40;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background-color: ${({ theme }) => theme.colors.surface.secondary};
-    }
-  `;
-
   const variants = {
     default: css`
-      ${baseStyles}
+      ${baseInputStyles}
       border: 1px solid ${({ theme }) =>
         hasError
           ? theme.colors.interactive.danger
@@ -77,7 +70,7 @@ const getVariantStyles = (variant: InputVariant, hasError: boolean) => {
         border-color: ${({ theme }) =>
           hasError
             ? theme.colors.interactive.danger
-            : theme.colors.text.tertiary};
+            : theme.colors.interactive.primary};
       }
 
       &:focus {
@@ -88,9 +81,11 @@ const getVariantStyles = (variant: InputVariant, hasError: boolean) => {
       }
     `,
     filled: css`
-      ${baseStyles}
+      ${baseInputStyles}
       background-color: ${({ theme }) => theme.colors.surface.secondary};
-      border: 1px solid transparent;
+      border: 1px solid
+        ${({ theme }) =>
+          hasError ? theme.colors.interactive.danger : "transparent"};
       border-radius: ${({ theme }) => theme.borderRadius.md};
 
       &:hover:not(:disabled) {
@@ -107,12 +102,11 @@ const getVariantStyles = (variant: InputVariant, hasError: boolean) => {
 
       ${hasError &&
       css`
-        border-color: ${({ theme }) => theme.colors.interactive.danger};
         background-color: ${({ theme }) => theme.colors.interactive.danger}10;
       `}
     `,
     minimal: css`
-      ${baseStyles}
+      ${baseInputStyles}
       background-color: transparent;
       border: none;
       border-bottom: 2px solid
@@ -144,16 +138,11 @@ const getVariantStyles = (variant: InputVariant, hasError: boolean) => {
   return variants[variant];
 };
 
-const InputContainer = styled.div<{ $isFullWidth: boolean }>`
+const Container = styled.div<{ $isFullWidth: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.xs};
-
-  ${({ $isFullWidth }) =>
-    $isFullWidth &&
-    css`
-      width: 100%;
-    `}
+  gap: 4px;
+  width: ${({ $isFullWidth }) => ($isFullWidth ? "100%" : "auto")};
 `;
 
 const Label = styled.label`
@@ -162,107 +151,20 @@ const Label = styled.label`
   color: ${({ theme }) => theme.colors.text.primary};
 `;
 
-const InputWrapper = styled.div<{
-  $hasIcon: boolean;
-  $iconPosition: "leading" | "trailing" | "both";
-  $size: InputSize;
-}>`
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  ${({ $hasIcon, $iconPosition, $size }) => {
-    if (!$hasIcon) return "";
-
-    const iconPadding = {
-      sm: "32px",
-      md: "36px",
-      lg: "44px",
-    };
-
-    return css`
-      input {
-        ${($iconPosition === "leading" || $iconPosition === "both") &&
-        css`
-          padding-left: ${iconPadding[$size]};
-        `}
-
-        ${($iconPosition === "trailing" || $iconPosition === "both") &&
-        css`
-          padding-right: ${iconPadding[$size]};
-        `}
-      }
-    `;
-  }}
-`;
-
 const StyledInput = styled.input<{
   $variant: InputVariant;
   $size: InputSize;
   $hasError: boolean;
   $isFullWidth: boolean;
 }>`
-  font-family: inherit;
-
   ${({ $variant, $hasError }) => getVariantStyles($variant, $hasError)}
-  ${({ $size }) => getSizeStyles($size)}
-
-  ${({ $isFullWidth }) =>
-    $isFullWidth &&
-    css`
-      width: 100%;
-    `}
+  ${({ $size }) => sizeStyles[$size]}
+  width: ${({ $isFullWidth }) => ($isFullWidth ? "100%" : "auto")};
 `;
 
-const IconWrapper = styled.div<{
-  $position: "leading" | "trailing";
-  $size: InputSize;
-}>`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.colors.text.tertiary};
-  pointer-events: none;
-  z-index: 1;
-
-  ${({ $position, $size }) => {
-    const offset = {
-      sm: "8px",
-      md: "12px",
-      lg: "16px",
-    };
-
-    return css`
-      ${$position}: ${offset[$size]};
-    `;
-  }}
-
-  svg {
-    width: 1em;
-    height: 1em;
-  }
-`;
-
-const LoadingSpinner = styled.div`
-  width: 1em;
-  height: 1em;
-  border: 2px solid ${({ theme }) => theme.colors.surface.border};
-  border-top: 2px solid ${({ theme }) => theme.colors.interactive.primary};
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`;
-
-const HelperText = styled.span<{ $isError: boolean }>`
+const ErrorText = styled.span`
   font-size: 0.75rem;
-  color: ${({ theme, $isError }) =>
-    $isError ? theme.colors.interactive.danger : theme.colors.text.secondary};
+  color: ${({ theme }) => theme.colors.interactive.danger};
 `;
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -270,69 +172,33 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     {
       label,
       error,
-      hint,
       inputSize = "md",
       variant = "default",
       isFullWidth = false,
-      precedingIcon,
-      followingIcon,
-      isLoading = false,
-      disabled,
       id,
       ...props
     },
     ref
   ) => {
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+    const inputId = id || `input-${Math.random().toString(36)}`;
     const hasError = !!error;
-    const hasIcon = !!(precedingIcon || followingIcon || isLoading);
-
-    let iconPosition: "leading" | "trailing" | "both" = "leading";
-    if (precedingIcon && (followingIcon || isLoading)) {
-      iconPosition = "both";
-    } else if (followingIcon || isLoading) {
-      iconPosition = "trailing";
-    }
-
-    const helperText = error || hint;
 
     return (
-      <InputContainer $isFullWidth={isFullWidth}>
+      <Container $isFullWidth={isFullWidth}>
         {label && <Label htmlFor={inputId}>{label}</Label>}
 
-        <InputWrapper
-          $hasIcon={hasIcon}
-          $iconPosition={iconPosition}
+        <StyledInput
+          ref={ref}
+          id={inputId}
+          $variant={variant}
           $size={inputSize}
-        >
-          {precedingIcon && (
-            <IconWrapper $position="leading" $size={inputSize}>
-              {precedingIcon}
-            </IconWrapper>
-          )}
+          $hasError={hasError}
+          $isFullWidth={isFullWidth}
+          {...props}
+        />
 
-          <StyledInput
-            ref={ref}
-            id={inputId}
-            $variant={variant}
-            $size={inputSize}
-            $hasError={hasError}
-            $isFullWidth={isFullWidth}
-            disabled={disabled || isLoading}
-            {...props}
-          />
-
-          {(followingIcon || isLoading) && (
-            <IconWrapper $position="trailing" $size={inputSize}>
-              {isLoading ? <LoadingSpinner /> : followingIcon}
-            </IconWrapper>
-          )}
-        </InputWrapper>
-
-        {helperText && (
-          <HelperText $isError={hasError}>{helperText}</HelperText>
-        )}
-      </InputContainer>
+        {error && <ErrorText>{error}</ErrorText>}
+      </Container>
     );
   }
 );

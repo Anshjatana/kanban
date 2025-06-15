@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { CheckCircle, Users, BarChart3 } from "lucide-react";
 import { Wrapper } from "./styles";
 import Features from "./Features";
@@ -7,15 +6,18 @@ import Hero from "./Hero";
 import { demoData } from "../../constants";
 import Footer from "./Footer";
 import Navbar from "../../components/Navbar";
+import { useAppContext } from "../../context/AppContext";
 
 const Landing = () => {
-  const [userName, setUserName] = useState("");
+  const { user, setUser } = useAppContext();
 
   const handleGetStarted = () => {
-    console.log("Navigating to /kanban with user:", userName);
-    alert(
-      `Welcome ${userName || "there"}! Redirecting to your Kanban board...`
-    );
+    window.location.href = "/kanban";
+  };
+
+  // Handler to update user name
+  const handleSetUserName = (name: string) => {
+    setUser({ name: name });
   };
 
   const features = [
@@ -44,8 +46,8 @@ const Landing = () => {
       <Navbar />
       <Hero
         handleGetStarted={handleGetStarted}
-        userName={userName}
-        setUserName={setUserName}
+        userName={user?.name || ""}
+        setUserName={handleSetUserName}
       />
       <Demo demoData={demoData} />
       <Features features={features} />
