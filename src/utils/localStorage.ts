@@ -1,6 +1,6 @@
 import { getFirstName } from "./index";
 import { getInitialTasks } from "../constants";
-import type { Task } from "../types/task.types";
+import type { TaskType } from "../types/task.types";
 
 const KEYS = {
   USER: "kanban-user",
@@ -46,7 +46,7 @@ export const storage = {
     }
   },
 
-  getTasks: (): Task[] => {
+  getTasks: (): TaskType[] => {
     try {
       const tasksStr = localStorage.getItem(KEYS.TASKS);
       if (!tasksStr) {
@@ -80,7 +80,7 @@ export const storage = {
     }
   },
 
-  setTasks: (tasks: Task[]): void => {
+  setTasks: (tasks: TaskType[]): void => {
     try {
       localStorage.setItem(KEYS.TASKS, JSON.stringify(tasks));
     } catch (error) {
