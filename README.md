@@ -2,6 +2,10 @@
 
 A fully functional Kanban board application built with React and TypeScript, featuring dark and light theme, drag-and-drop functionality using native HTML5 APIs.
 
+## Live Url
+
+- Checkout Kanban space at [kanban.anshjatana.online](https://kanban.anshjatana.online)
+
 ## Features
 
 - **Three Column Layout**: Todo, In Progress, and Done columns
@@ -25,7 +29,7 @@ A fully functional Kanban board application built with React and TypeScript, fea
 
 ```bash
 git clone <repository-url>
-cd kanban-board
+cd MY-KANBAN_APP
 ```
 
 2. Install dependencies
