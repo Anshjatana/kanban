@@ -39,7 +39,6 @@ export const TaskContainer = styled.div`
 
   &.dragging {
     opacity: 0.5;
-    // transform: rotate(5deg);
   }
 `;
 
